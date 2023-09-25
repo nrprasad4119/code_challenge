@@ -8,18 +8,17 @@ In a 3-tier environment, we have:
 Web Tier Template (web-tier.json):
 App Service Plan
 App Service
-Network configurations (if required)
-Application Settings (e.g., connection strings)
+Network configurations
+Application Settings
 
 Application Tier Template (app-tier.json):
 Virtual Network
-Virtual Machines (or other compute resources)
+Virtual Machines
 Necessary software installations and configurations
-Network Security Groups (NSGs)
-Application deployment (if applicable)
+Network Security Groups
 
 Database Tier Template (db-tier.json):
-SQL Server (or any other database service)
+SQL Server
 Databases
 Firewall rules for secure access
 
