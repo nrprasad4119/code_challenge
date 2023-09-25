@@ -1,0 +1,60 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "resources": [
+    {
+      "apiVersion": "2020-08-01",
+      "type": "Microsoft.Sql/servers",
+      "name": "sqlServer",
+      "location": "[resourceGroup().location]",
+      "properties": {
+        "administratorLogin": "[parameters('sqlAdminUsername')]",
+        "administratorLoginPassword": "[parameters('sqlAdminPassword')]",
+        "version": "12.0"
+      }
+    },
+    {
+      "apiVersion": "2020-08-01-preview",
+      "type": "Microsoft.Sql/servers/databases",
+      "name": "sampleDatabase",
+      "location": "[resourceGroup().location]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Sql/servers', 'sqlServer')]"
+      ],
+      "properties": {
+        "collation": "SQL_Latin1_General_CP1_CI_AS",
+        "edition": "Basic",
+        "maxSizeBytes": "2147483648",
+        "requestedServiceObjectiveName": "Basic",
+        "sampleName": "AdventureWorksLT"
+      }
+    },
+    {
+      "apiVersion": "2020-08-01",
+      "type": "Microsoft.Sql/servers/firewallRules",
+      "name": "allowAzureServices",
+      "location": "[resourceGroup().location]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Sql/servers', 'sqlServer')]"
+      ],
+      "properties": {
+        "startIpAddress": "0.0.0.0",
+        "endIpAddress": "0.0.0.0"
+      }
+    }
+  ],
+  "parameters": {
+    "sqlAdminUsername": {
+      "type": "string",
+      "metadata": {
+        "description": "Username for the SQL Server administrator."
+      }
+    },
+    "sqlAdminPassword": {
+      "type": "securestring",
+      "metadata": {
+        "description": "Password for the SQL Server administrator."
+      }
+    }
+  }
+}
